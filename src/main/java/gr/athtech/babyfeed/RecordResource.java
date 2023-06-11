@@ -4,12 +4,15 @@ import gr.athtech.babyfeed.model.Session;
 import gr.athtech.babyfeed.service.RecordService;
 import gr.athtech.babyfeed.service.RecordServiceImpl;
 import jakarta.inject.Inject;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 
-@Path("/hello-world")
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+@Path("/session")
 public class RecordResource {
 RecordServiceImpl recordService = new RecordServiceImpl();
 
@@ -20,22 +23,10 @@ RecordServiceImpl recordService = new RecordServiceImpl();
         return "Hello, World!";
     }
 
-//    @Path("/recorss")
-//    @GET
-//    @Produces(MediaType.APPLICATION_JSON)
-//    public Session getRecord() {
-//        Session session = new Session();
-//        session.setDuration(2);
-//        session.setId(2);
-//
-//
-//        return session;
-//    }
-
     @Path("/record")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Session getRecor() {
+    public Session createRecord() {
         Session record = new Session();
         record.setDuration(2);
         record.setId(2);
@@ -43,4 +34,24 @@ RecordServiceImpl recordService = new RecordServiceImpl();
 
         return recordService.saveRecord(record);
     }
+
+    @Path("/{sessionId}")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Session getSession(@PathParam("sessionId") int sessionId) {
+        return recordService.readRecord(sessionId);
+    }
+
+//    @GET
+//    @Produces(MediaType.TEXT_PLAIN)
+//    @Path("/DB_Write")
+//    public String save(){
+//        Session record = new Session();
+//        record.setDuration(3);
+//        record.setId(3);
+//
+//
+//    return recordService.saveRecord(record);
+//    }
+
 }
