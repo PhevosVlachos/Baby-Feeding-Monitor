@@ -11,6 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.List;
 
 @Path("/session")
 public class RecordResource {
@@ -18,20 +19,17 @@ RecordServiceImpl recordService = new RecordServiceImpl();
 
 
     @GET
-    @Produces("text/plain")
-    public String hello() {
-        return "Hello, World!";
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Session> listAll() {
+        return recordService.listAll();
     }
 
-    @Path("/record")
+    @Path("/create")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Session createRecord() {
         Session record = new Session();
-        record.setDuration(2);
-        record.setId(2);
-
-
+        record.setDuration(7);
         return recordService.saveRecord(record);
     }
 
@@ -41,6 +39,10 @@ RecordServiceImpl recordService = new RecordServiceImpl();
     public Session getSession(@PathParam("sessionId") int sessionId) {
         return recordService.readRecord(sessionId);
     }
+
+
+
+
 
 //    @GET
 //    @Produces(MediaType.TEXT_PLAIN)

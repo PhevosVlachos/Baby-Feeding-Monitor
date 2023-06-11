@@ -6,6 +6,8 @@ import gr.athtech.babyfeed.repository.RecordRepository;
 import gr.athtech.babyfeed.repository.RecordRepositoryImpl;
 import jakarta.inject.Inject;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 public class RecordServiceImpl implements RecordService {
@@ -17,21 +19,13 @@ public class RecordServiceImpl implements RecordService {
     public Session saveRecord(Session record) {
     Session session = new Session();
     session = record;
-
     recordRepository.save(session);
-
     return session;
-
-
-
-
-
-
     }
 
     @Override
-    public Session readRecord(int id) {
-        Optional<Session> record = recordRepository.findById(id);
+    public Session readRecord(int sessionId) {
+        Optional<Session> record = recordRepository.findById(sessionId);
 
         if (record.isPresent()) {
             Session ses = new Session();
@@ -45,7 +39,22 @@ public class RecordServiceImpl implements RecordService {
     }
 
     @Override
-    public boolean deleteRecord(int id) {
-        return false;
+    public String deleteRecord(int sessionId) {
+
+        return "ok";
+//        if(recordRepository.delete(sessionId)){
+//            return "Done";
+//        } else{
+//
+//            return "Did Not Succeed";
+//        }
+
+    }
+
+    @Override
+    public List<Session> listAll() {
+       return recordRepository.listAll();
+
+
     }
 }

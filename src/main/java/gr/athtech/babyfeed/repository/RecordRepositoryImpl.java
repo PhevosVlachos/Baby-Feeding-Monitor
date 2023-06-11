@@ -8,8 +8,11 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import static java.lang.System.in;
 
 public class RecordRepositoryImpl implements RecordRepository {
 
@@ -78,8 +81,31 @@ public class RecordRepositoryImpl implements RecordRepository {
     }
 
     @Override
-    public Optional<List<Session>> listAll() {
-        return Optional.empty();
+    public List<Session> listAll() {
+        String sqlCommand = "select * from Session;";
+
+        try {
+            PreparedStatement stmt = conn.prepareStatement(sqlCommand,
+                    Statement.RETURN_GENERATED_KEYS);
+            ResultSet rs = stmt.executeQuery();
+
+            List<Session> records = new ArrayList<>();
+
+            while (rs.next()) {
+                Session record = new Session();
+                record.setId(rs.getInt(1));
+                record.setDuration(rs.getInt(2));
+                records.add(record);
+            }
+
+            return records;
+
+        } catch (SQLException e) {
+
+            throw new RuntimeException(e);
+        }
+
+
     }
 
     @Override
@@ -89,7 +115,21 @@ public class RecordRepositoryImpl implements RecordRepository {
 
     @Override
     public boolean delete(int sessionId) {
-        return false;
+
+        String sqlCommand = "DELETE FROM Session WHERE id=?;";
+
+        try {
+            PreparedStatement stmt = conn.prepareStatement(sqlCommand,
+                    Statement.RETURN_GENERATED_KEYS);
+
+            stmt.setInt(1, sessionId);
+            ResultSet results = stmt.executeQuery();
+            return true;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+
     }
 
 

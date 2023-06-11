@@ -12,7 +12,7 @@ public interface RecordRepository {
 
     Optional<Session> findById(int id);
 
-    Optional<List<Session>> listAll();
+    List<Session> listAll();
 
     Optional<Session> update(int sessionId, Session record);
 
